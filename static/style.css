@@ -71,7 +71,7 @@ body, html {
 .bot-message {
     background-color: #333366;
     color: white;
-    margin-right: 30px; 
+    margin-left: 30px; 
 }
 
 .icon {
@@ -88,6 +88,6 @@ body, html {
 
 .bot-icon {
     background-color: #007bff; 
-    right: -30px;
+    left: -30px;
 }
 
