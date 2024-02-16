@@ -17,6 +17,7 @@ body, html {
     height: 100%;
     display: flex;
     flex-direction: column;
+    background-color: #1a1a1a;
 }
 
 #chat-box {
@@ -51,7 +52,7 @@ body, html {
 }
 
 .message {
-    max-width: 80%;
+    max-width: 100%;
     margin: 5px 0;
     padding: 10px;
     border-radius: 15px;
@@ -73,7 +74,6 @@ body, html {
     margin-right: 30px; 
 }
 
-
 .icon {
     width: 20px;
     height: 20px;
@@ -90,5 +90,4 @@ body, html {
     background-color: #007bff; 
     right: -30px;
 }
-
 
