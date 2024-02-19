@@ -33,7 +33,7 @@ document.getElementById('user-input').addEventListener('keypress', function (e) 
             chatBox.scrollTop = chatBox.scrollHeight;
 
 
-            fetch('/ask', {
+            fetch('/asktoken', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

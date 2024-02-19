@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request, render_template
 from text_generator import Generator
+from tokenizer import Tokenzier
 generator =  Generator()
+tokenz = Tokenzier()
 app = Flask(__name__)
 
 @app.route('/')
@@ -26,7 +28,8 @@ def ask():
 def asktoken():
     corpus = request.json['message'] 
 
-    tokens = "Response from the tokenizer will go here"
+    tokens = str(tokenz.byte_pair_encode_bangla(corpus, 5))
+    
     return jsonify({'message': tokens})
 
 if __name__ == '__main__':

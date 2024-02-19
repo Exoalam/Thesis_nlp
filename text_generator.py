@@ -8,7 +8,6 @@ tokenizer.add_special_tokens({
     "unk_token": "<unk>",
     "pad_token": "<pad>",
     "mask_token": "<mask>",
-    'additional_special_tokens': ['Question:', 'Answer:']
 })
 
 # config = GPT2Config()
@@ -17,39 +16,28 @@ tokenizer.add_special_tokens({
 # state_dict = torch.load('saved_model/weight.bin', map_location='cpu' if not torch.cuda.is_available() else None)
 # model = load_weight(model, state_dict)
 # model.eval()
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
+
 class Generator:
-    model = AutoModelForCausalLM.from_pretrained("saved_model2")
-    model.resize_token_embeddings(len(tokenizer))
-    # Device configuration
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(device)
-
-    # Encode input context
-    #input_ids = tokenizer.encode("আপনি কেমন আছেন?", return_tensors='pt').to(device)
-    # question = "ঢাকা বাংলাদেশ"
-    def generate_text(self, question):
-        #input_ids = tokenizer.encode("Question: " + question + " Answer:", return_tensors="pt").to(device)
+    def __init__(self, model_name_or_path="saved_model2"):
+        self.model = AutoModelForCausalLM.from_pretrained(model_name_or_path)
+        # It's important to resize token embeddings when you've added new tokens to the tokenizer.
+        self.model.resize_token_embeddings(len(tokenizer))
+        
+        # Device configuration
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(self.device)
+    
+    def generate_text(self, question, max_length=128):
         input_ids = tokenizer.encode(question, return_tensors='pt').to(self.device)
-        # Generate text
-        max_length = 128
+        
+        # Generate text with a safeguard for the maximum length
         with torch.no_grad():
-            while len(input_ids[0]) < max_length:
-                outputs = self.model(input_ids)
-                logits = outputs[0]  # Accessing the first element of the tuple for logits
-
-            # Get the predicted next sub-word (greedy approach)
-                predicted_id = torch.argmax(logits[:, -1, :], axis=-1)
-                
-                # Stop if end of sequence token is generated
-                if predicted_id[0] == tokenizer.eos_token_id:
-                    break
-
-                # Append predicted token to the input sequence and continue
-                input_ids = torch.cat([input_ids, predicted_id.unsqueeze(-1)], dim=-1)
-
+            outputs = self.model.generate(input_ids, max_length=max_length, eos_token_id=tokenizer.eos_token_id)
+        
         # Decode the generated tokens to text
-        generated_text = tokenizer.decode(input_ids[0], skip_special_tokens=True)
+        generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
         return generated_text
-        # print("Generated Text:")
-        # print(generated_text)
+
     
