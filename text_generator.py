@@ -1,14 +1,14 @@
 from transformers import GPT2Tokenizer
 import torch
-tokenizer = GPT2Tokenizer.from_pretrained("vocab",  unk_token="[UNK]")
+tokenizer = GPT2Tokenizer.from_pretrained("NEO",  unk_token="[UNK]")
 from transformers import AutoModelForCausalLM
-tokenizer.add_special_tokens({
-    "eos_token": "</s>",
-    "bos_token": "<s>",
-    "unk_token": "<unk>",
-    "pad_token": "<pad>",
-    "mask_token": "<mask>",
-})
+# tokenizer.add_special_tokens({
+#     "eos_token": "</s>",
+#     "bos_token": "<s>",
+#     "unk_token": "<unk>",
+#     "pad_token": "<pad>",
+#     "mask_token": "<mask>",
+# })
 
 # config = GPT2Config()
 # model = GPT2LMHeadModel(config)
@@ -20,10 +20,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
 class Generator:
-    def __init__(self, model_name_or_path="saved_model2"):
+    def __init__(self, model_name_or_path="NEO_old"):
         self.model = AutoModelForCausalLM.from_pretrained(model_name_or_path)
         # It's important to resize token embeddings when you've added new tokens to the tokenizer.
-        self.model.resize_token_embeddings(len(tokenizer))
+        #self.model.resize_token_embeddings(len(tokenizer))
         
         # Device configuration
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
