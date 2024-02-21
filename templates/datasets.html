@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangla GPT</title>
+    <link rel="stylesheet" href="static\style.css">
+    
+</head>
+<body>
+    <div id="chat-container">
+        <a href="/" style="text-decoration:none; color:  black; text-align: center; font-size: 2vw;">Dataset</a>
+        <div id="input-box" style="margin-left: auto; margin-right: auto; flex-direction: row; height: 90%; width: 90%; margin-top: 2%; border-radius: 10px;">
+            <div style="width: 30%; height: 95%; background-color: #afafaf; margin: 1.5%;"><div style="color: black; text-align: center; font-size: 3vw;
+             margin-left: auto; margin-right: auto; padding-top: 2%;">Wiki Dump</div>
+             <textarea id="textBoxwiki" cols="30" rows="10" readonly style="height: 85%; width: 98%; margin: 1%; margin-top: 7%;"></textarea>
+             </div>
+            <div style="width: 30%; height: 95%; background-color: #afafaf; margin: 1.5%;"><div style="color: black; text-align: center; font-size: 3vw; 
+            margin-left: auto; margin-right: auto; padding-top: 2%;">Conversational</div>
+            <textarea id="textBoxconvo" cols="30" rows="10" readonly style="height: 85%; width: 98%; margin: 1%; margin-top: 7%;"></textarea>
+            </div>
+            <div style="width: 30%; height: 95%; background-color: #afafaf; margin: 1.5%;"><div style="color: black; text-align: center; font-size: 3vw; 
+            margin-left: auto; margin-right: auto; padding-top: 2%;">Vocabulary</div>
+            <textarea id="textBox" cols="30" rows="10" readonly style="height: 85%; width: 98%; margin: 1%; margin-top: 7%;"></textarea>
+            </div>    
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/dataset_token')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('textBox').value = data;
+                })
+                .catch(error => {
+                    console.error('Error loading the text: ', error);
+                });
+                fetch('/dataset_wiki')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('textBoxwiki').value = data;
+                })
+                .catch(error => {
+                    console.error('Error loading the text: ', error);
+                });
+                fetch('/dataset_convo')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('textBoxconvo').value = data;
+                })
+                .catch(error => {
+                    console.error('Error loading the text: ', error);
+                });
+        });
+    </script>
+</body>
+</html>

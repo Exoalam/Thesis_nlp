@@ -1,8 +1,8 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, send_from_directory
 from text_generator import Generator
-from tokenizer import Tokenzier
+from tokenizer import Tokenizer
 generator =  Generator()
-tokenz = Tokenzier()
+tokenz = Tokenizer()
 app = Flask(__name__)
 
 @app.route('/')
@@ -28,10 +28,27 @@ def ask():
 def asktoken():
     corpus = request.json['message'] 
 
-    tokens = str(tokenz.byte_pair_encode_bangla(corpus, 5))
+    tokens = str(tokenz.tokenize_text(corpus))
     
     return jsonify({'message': tokens})
 
+@app.route('/datasets')
+def datasets():
+    return render_template('datasets.html')
+
+@app.route('/dataset_token')
+def dataset_token():
+    # Assuming the text file is named example.txt and located in the static folder
+    return send_from_directory('static', 'tokens.txt')
+
+@app.route('/dataset_wiki')
+def dataset_wiki():
+    # Assuming the text file is named example.txt and located in the static folder
+    return send_from_directory('static', 'wiki.txt')
+@app.route('/dataset_convo')
+def dataset_convo():
+    # Assuming the text file is named example.txt and located in the static folder
+    return send_from_directory('static', 'conv.txt')
 if __name__ == '__main__':
     
     app.run(debug=True)
