@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, request, render_template, send_from_directory
 from text_generator import Generator
 from tokenizer import Tokenizer
+from text import Generatien
 generator =  Generator()
+generater = Generatien()
 tokenz = Tokenizer()
 app = Flask(__name__)
 
@@ -13,6 +15,10 @@ def index():
 def banglagpt():
     return render_template('banglagpt.html')
 
+@app.route('/banglagpte')
+def banglagpte():
+    return render_template('banglagpte.html')
+
 @app.route('/tokenizer')
 def tokenzier():
     return render_template('token.html')
@@ -22,6 +28,13 @@ def ask():
     user_message = request.json['message'] 
     
     response_message = generator.generate_text(user_message)
+    return jsonify({'message': response_message})
+
+@app.route('/aske', methods=['POST'])
+def aske():
+    user_message = request.json['message'] 
+    
+    response_message = generater.generate_text(user_message)
     return jsonify({'message': response_message})
 
 @app.route('/asktoken', methods=['POST'])
